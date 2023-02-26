@@ -18,3 +18,15 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthorOrReadOnly,)
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+
+class UserPostList(generics.ListCreateAPIView):
+    permission_classes = (IsAuthorOrReadOnly,)
+    serializer_class = PostSerializer
+    def get_queryset(self):
+        return Post.objects.filter(author_id=self.request.user)
+    
+class UserPostDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAuthorOrReadOnly,)
+    serializer_class = PostSerializer
+    def get_queryset(self):
+        return Post.objects.filter(author_id=self.request.user)
