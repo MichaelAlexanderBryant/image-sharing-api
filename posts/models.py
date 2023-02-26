@@ -1,6 +1,8 @@
 from django.db import models
 from django.conf import settings
 
+def upload_path(instance, filename):
+    return '/static/'.join([str(instance.title),filename])
 
 class Post(models.Model):
     title = models.CharField(max_length=100)
