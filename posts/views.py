@@ -38,3 +38,8 @@ class CommentListView(generics.ListCreateAPIView):
         current_url = self.request.get_full_path()
         post_id = current_url[current_url.find('comments/')+9:-1]
         return Comment.objects.filter(post_id=post_id)
+    
+class CommentDetailView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAuthorOrReadOnly,)
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
