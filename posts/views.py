@@ -1,8 +1,8 @@
 from rest_framework import generics
 
-from .models import Post
+from .models import Post, Comment
 from .permissions import IsAuthorOrReadOnly
-from .serializers import PostSerializer, MyTokenObtainPairSerializer
+from .serializers import PostSerializer, MyTokenObtainPairSerializer, CommentSerializer
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 
@@ -30,3 +30,11 @@ class UserPostDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PostSerializer
     def get_queryset(self):
         return Post.objects.filter(author_id=self.request.user)
+    
+class CommentListView(generics.ListCreateAPIView):
+    permission_classes = (IsAuthorOrReadOnly,)
+    serializer_class = CommentSerializer
+    def get_queryset(self):
+        current_url = self.request.get_full_path()
+        post_id = current_url[current_url.find('comments/')+9:-1]
+        return Comment.objects.filter(post_id=post_id)

@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.conf import settings
 
 def upload_path(instance, filename):
@@ -14,3 +15,12 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title + " by " + str(self.author)
+    
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    comment = models.TextField(max_length=250)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, to_field='username', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.comment
+

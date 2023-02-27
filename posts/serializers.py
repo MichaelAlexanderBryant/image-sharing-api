@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Post
+from .models import Post, Comment
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -23,3 +23,12 @@ class PostSerializer(serializers.ModelSerializer):
             "created_at"
         )
         model = Post
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = (
+            'post',
+            'comment',
+            'author',
+        )
+        model = Comment
